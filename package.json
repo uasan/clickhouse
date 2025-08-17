@@ -1,0 +1,20 @@
+{
+  "name": "clickhouse",
+  "private": true,
+  "author": "UAH",
+  "description": "ClickHouse",
+  "version": "1.0.0",
+  "license": "ISC",
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "dependencies": {
+    "@clickhouse/client-web": "latest"
+  },
+  "devDependencies": {
+    "dprint": "latest",
+    "@dprint/formatter": "latest",
+    "@dprint/typescript": "latest"
+  }
+}
