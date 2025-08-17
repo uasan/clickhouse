@@ -1,7 +1,7 @@
 import { createClient } from '@clickhouse/client-web';
 
+import { Migration } from './Migration.js';
 import { SQL } from './SQL.js';
-import { Migration } from './migrations/Migration.js';
 
 export class ClickHouse {
   client = null;

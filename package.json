@@ -6,6 +6,10 @@
   "version": "1.0.0",
   "license": "ISC",
   "type": "module",
+  "main": "./src/ClickHouse.js",
+  "exports": {
+    ".": "./src/ClickHouse.js"
+  },
   "engines": {
     "node": ">=24.0.0"
   },
