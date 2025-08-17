@@ -2,16 +2,17 @@ import { styleText } from 'node:util';
 
 export class Reporter {
   count = 0;
+  label = styleText('blueBright', 'ClickHouse ');
 
   star() {
-    console.log(styleText('blueBright', 'ClickHouse ') + styleText('green', 'Migrations Start'));
+    console.log(this.label + styleText('green', 'Migrations Start'));
   }
 
   up(name) {
     this.count++;
+
     console.log(
-      styleText('blueBright', 'ClickHouse ')
-        + styleText('green', 'Migration: ')
+      this.label + styleText('green', 'Migration: ')
         + styleText('bold', this.count.toString())
         + ' '
         + styleText('green', 'up ')
@@ -20,6 +21,6 @@ export class Reporter {
   }
 
   done() {
-    console.log(styleText('blueBright', 'ClickHouse ') + styleText('green', 'Migrations Done'));
+    console.log(this.label + styleText('green', 'Migrations Done'));
   }
 }
