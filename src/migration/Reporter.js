@@ -4,10 +4,6 @@ export class Reporter {
   count = 0;
   label = styleText('blueBright', 'ClickHouse ');
 
-  star() {
-    console.log(this.label + styleText('green', 'Migrations Start'));
-  }
-
   up(name) {
     this.count++;
 
@@ -18,9 +14,5 @@ export class Reporter {
         + styleText('green', 'up ')
         + name,
     );
-  }
-
-  done() {
-    console.log(this.label + styleText('green', 'Migrations Done'));
   }
 }

@@ -24,8 +24,8 @@ export class ClickHouse {
     return new ClickHouse({ ...this.options, ...options });
   }
 
-  migration() {
-    return new Migration(this);
+  migration(context) {
+    return new Migration(this, context);
   }
 
   async insert(table, values, format = 'JSONEachRow') {
