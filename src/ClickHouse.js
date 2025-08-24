@@ -3,6 +3,8 @@ import { createClient } from '@clickhouse/client-web';
 import { Migration } from './Migration.js';
 import { SQL } from './SQL.js';
 
+export { ClickHouseTable } from './ClickHouseTable.js';
+
 export class ClickHouse {
   client = null;
   options = null;
