@@ -1,4 +1,5 @@
 export class ClickHouseTable {
+  static version = 1;
   static tableName = '';
 
   static injectSQL({ source }, string) {
