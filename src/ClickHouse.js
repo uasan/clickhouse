@@ -30,7 +30,7 @@ export class ClickHouse {
     return new Migration(this, context);
   }
 
-  async insert(table, values, format = 'JSONEachRow') {
-    await this.client.insert({ table, values, format });
+  async insert(table, values, options = { format: 'JSONEachRow' }) {
+    await this.client.insert({ table, values, ...options });
   }
 }
