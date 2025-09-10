@@ -1,5 +1,5 @@
-import { getMigrations } from './migration/migrate.js';
-import { Reporter } from './migration/Reporter.js';
+import { getMigrations } from './migrate.js';
+import { Reporter } from './Reporter.js';
 
 export class Migration {
   client = null;

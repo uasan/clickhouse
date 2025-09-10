@@ -1,9 +1,10 @@
 import { createClient } from '@clickhouse/client-web';
 
-import { Migration } from './Migration.js';
-import { SQL } from './SQL.js';
+import { Migration } from './/migration/Migration.js';
+import { SQL } from './sql/SQL.js';
+import { SQLBuilder } from './sql/SQLBuilder.js';
 
-export { ClickHouseTable } from './ClickHouseTable.js';
+export { ClickHouseTable } from './models/ClickHouseTable.js';
 
 export class ClickHouse {
   client = null;
@@ -19,7 +20,11 @@ export class ClickHouse {
   }
 
   sql(source, ...values) {
-    return new SQL(this.client, source, values);
+    return new SQL(this).set(source, values);
+  }
+
+  builder() {
+    return new SQLBuilder(this);
   }
 
   new(options) {
