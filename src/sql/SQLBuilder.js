@@ -46,12 +46,11 @@ export class SQLBuilder extends SQL {
           source[0] = sql;
         }
 
-        this.set(source, values);
-        break;
+        return this.set(source, values);
       }
     }
 
-    return this;
+    throw new Error('Unknown SQL build command: ' + sql);
   }
 
   make() {

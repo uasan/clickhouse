@@ -11,17 +11,18 @@ export class SQL {
     this.client = client;
   }
 
-  async then(resolve, reject) {
-    try {
-      const res = await this.client.query({
-        query: this.toString(),
-        format: this.format,
-        query_params: this.getQueryParams(),
-      });
-      resolve(await res.json());
-    } catch (error) {
-      reject(error);
-    }
+  async send() {
+    const res = await this.client.query({
+      query: this.toString(),
+      format: this.format,
+      query_params: this.getQueryParams(),
+    });
+
+    return (await res.json());
+  }
+
+  then(resolve, reject) {
+    this.send().then(resolve, reject);
   }
 
   getQueryParams() {
