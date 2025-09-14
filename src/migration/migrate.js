@@ -1,5 +1,5 @@
 async function createDatabase(client) {
-  await client.new({ database: '' }).command(`CREATE DATABASE "${client.options.database}"`);
+  await client.new({ database: '' }).query(`CREATE DATABASE "${client.options.database}"`);
   await createTable(client);
 }
 

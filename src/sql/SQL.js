@@ -1,34 +1,32 @@
+import { getAllRows, getJSON, getOneRow, getValue } from '../protocol/result.js';
+import { getQueryParams } from '../protocol/utils.js';
 import { boldBlueBright, getTypeValue } from './utils.js';
 
 export class SQL {
   client = null;
+  result = getAllRows;
   format = 'JSONEachRow';
 
   source = [];
   values = [];
+  settings = '';
 
-  constructor({ client }) {
+  constructor(client) {
     this.client = client;
   }
 
-  async send() {
-    const res = await this.client.query({
-      query: this.toString(),
-      format: this.format,
-      query_params: this.getQueryParams(),
-    });
+  send() {
+    let url = '&default_format=' + this.format;
 
-    return (await res.json());
+    if (this.settings) {
+      url += this.settings;
+    }
+
+    return this.client.send(this.toString(), getQueryParams(url, this.values), this.result);
   }
 
   then(resolve, reject) {
     this.send().then(resolve, reject);
-  }
-
-  getQueryParams() {
-    const params = {};
-    for (let i = 0; i < this.values.length; i++) params['_' + (i + 1)] = this.values[i];
-    return params;
   }
 
   set(source, values) {
@@ -102,8 +100,22 @@ export class SQL {
     return this;
   }
 
+  asValue() {
+    this.result = getValue;
+    this.format = 'JSONCompactColumns';
+    return this;
+  }
+
   asObject() {
-    this.format = 'JSONCompact';
+    this.result = getOneRow;
+    this.format = 'JSONEachRow';
+    return this;
+  }
+
+  asLookup(name) {
+    this.result = getJSON;
+    this.format = 'JSONObjectEachRow';
+    this.settings += '&format_json_object_each_row_column_for_object_name=' + encodeURIComponent(name);
     return this;
   }
 }

@@ -13,9 +13,7 @@
   "engines": {
     "node": ">=24.0.0"
   },
-  "dependencies": {
-    "@clickhouse/client-web": "latest"
-  },
+  "dependencies": {},
   "devDependencies": {
     "dprint": "latest",
     "@dprint/formatter": "latest",

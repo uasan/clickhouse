@@ -1,5 +1,6 @@
 import { styleText } from 'node:util';
 
+export const boldRed = text => styleText('bold', styleText('red', text));
 export const boldBlueBright = text => styleText('bold', styleText('blueBright', text));
 
 export function getTypeValue(value) {
