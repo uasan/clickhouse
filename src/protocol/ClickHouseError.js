@@ -15,6 +15,10 @@ export class ClickHouseError extends Error {
   }
 
   static from(error) {
+    if (error?.constructor === this) {
+      return error;
+    }
+
     switch (typeof error) {
       case 'string':
         return new this(error);

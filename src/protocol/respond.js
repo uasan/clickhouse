@@ -1,21 +1,15 @@
-const { parse } = JSON;
-const decoder = new TextDecoder();
+export const { parse } = JSON;
+export const decoder = new TextDecoder();
 
 const countRows = res => Number(parse(res.headers.get('x-clickhouse-summary')).total_rows_to_read);
 
-export const getJSON = async res => countRows(res) ? await res.json() : null;
-export const getValue = async res => countRows(res) ? ((await res.json())[0]?.[0]) : undefined;
+export const getValue = async res => ((await res.json())[0]?.[0]);
 
-export async function getOneRow(res) {
-  switch (countRows(res)) {
-    case 1:
-      return await res.json();
-
-    case 0:
-      return null;
-
-    default:
-      throw 'More one row for asObject';
+export async function getJSON(res) {
+  try {
+    return await res.json();
+  } catch {
+    return null;
   }
 }
 

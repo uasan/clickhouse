@@ -1,5 +1,7 @@
 const { stringify } = JSON;
 
+export const noop = () => {};
+
 export const encodeURIOrDefault = (value, defaultValue) => value ? encodeURIComponent(value) : defaultValue;
 
 function encode(value) {

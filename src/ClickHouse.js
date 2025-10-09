@@ -8,7 +8,7 @@ import { SQLBuilder } from './sql/SQLBuilder.js';
 export { ClickHouseTable } from './models/ClickHouseTable.js';
 
 export class ClickHouse {
-  url = 'http://clickhouse.aws.hrf:8123';
+  url = 'http://localhost:8123';
 
   options = null;
   headers = null;
@@ -23,12 +23,13 @@ export class ClickHouse {
     this.url += '/?database=' + encodeURIOrDefault(options.database, 'default');
 
     this.headers = {
+      'accept-encoding': 'zstd',
       'x-clickhouse-key': options.password || '',
       'x-clickhouse-user': options.username || 'default',
     };
   }
 
-  async send(body, url = '', handler) {
+  async send(body, url = '', query) {
     try {
       const res = await fetch(this.url + url, {
         method: 'POST',
@@ -37,14 +38,14 @@ export class ClickHouse {
       });
 
       if (res.ok) {
-        if (handler) {
-          return await handler(res);
+        if (query) {
+          return await query.respond(res);
         }
       } else {
         throw ClickHouseError.parse(await res.text());
       }
     } catch (error) {
-      throw error?.constructor === ClickHouseError ? error : ClickHouseError.from(error);
+      throw ClickHouseError.from(error);
     }
   }
 
@@ -71,7 +72,7 @@ export class ClickHouse {
     return new ClickHouse({ ...this.options, ...options });
   }
 
-  migration(context) {
-    return new Migration(this, context);
+  migration({ context, ...options }) {
+    return new Migration(this.new(options), context);
   }
 }

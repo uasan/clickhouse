@@ -1,11 +1,12 @@
-import { getAllRows, getJSON, getOneRow, getValue } from '../protocol/result.js';
+import { getAllRows, getJSON, getValue } from '../protocol/respond.js';
 import { getQueryParams } from '../protocol/utils.js';
+import { readJSONL } from './iterator.js';
 import { boldBlueBright, getTypeValue } from './utils.js';
 
 export class SQL {
   client = null;
-  result = getAllRows;
   format = 'JSONEachRow';
+  respond = getAllRows;
 
   source = [];
   values = [];
@@ -22,7 +23,7 @@ export class SQL {
       url += this.settings;
     }
 
-    return this.client.send(this.toString(), getQueryParams(url, this.values), this.result);
+    return this.client.send(this.toString(), getQueryParams(url, this.values), this);
   }
 
   then(resolve, reject) {
@@ -101,21 +102,38 @@ export class SQL {
   }
 
   asValue() {
-    this.result = getValue;
+    this.respond = getValue;
     this.format = 'JSONCompactColumns';
     return this;
   }
 
   asObject() {
-    this.result = getOneRow;
+    this.respond = getJSON;
     this.format = 'JSONEachRow';
     return this;
   }
 
+  asTuples() {
+    this.respond = getAllRows;
+    this.format = 'JSONCompactEachRow';
+    return this;
+  }
+
   asLookup(name) {
-    this.result = getJSON;
+    this.respond = getJSON;
     this.format = 'JSONObjectEachRow';
     this.settings += '&format_json_object_each_row_column_for_object_name=' + encodeURIComponent(name);
     return this;
+  }
+
+  useCompression(encoder = 'zstd') {
+    this.settings += '&enable_http_compression=1';
+    this.client.headers['accept-encoding'] = encoder;
+    return this;
+  }
+
+  async *[Symbol.asyncIterator]() {
+    this.respond = readJSONL;
+    yield* await this.send();
   }
 }
