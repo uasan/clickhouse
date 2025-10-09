@@ -72,7 +72,7 @@ export class ClickHouse {
     return new ClickHouse({ ...this.options, ...options });
   }
 
-  migration({ context, ...options }) {
+  migration({ context, ...options } = {}) {
     return new Migration(this.new(options), context);
   }
 }
