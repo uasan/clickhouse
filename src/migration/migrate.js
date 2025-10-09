@@ -5,7 +5,7 @@ async function createDatabase(client) {
 
 async function createTable(client) {
   await client.sql`
-    CREATE TABLE migrations(
+    CREATE TABLE default.migrations(
       name       String,
       version    UInt32,
       created_at DateTime DEFAULT now()
@@ -18,7 +18,7 @@ export async function getMigrations(client) {
   const migrations = new Map();
 
   try {
-    for (const row of await client.sql`SELECT name, version FROM migrations FINAL`) {
+    for (const row of await client.sql`SELECT name, version FROM default.migrations FINAL`) {
       migrations.set(row.name, row.version);
     }
   } catch (error) {

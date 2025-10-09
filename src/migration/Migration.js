@@ -20,7 +20,7 @@ export class Migration {
 
       if (!migrations.has(key) || migrations.get(key) < version) {
         await migration.up(this.context);
-        await this.client.insert('migrations', [
+        await this.client.insert('default.migrations', [
           {
             name: key,
             version: version,
