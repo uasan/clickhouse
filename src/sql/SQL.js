@@ -1,6 +1,6 @@
+import { readJSONL } from '../protocol/iterator.js';
 import { getAllRows, getJSON, getValue } from '../protocol/respond.js';
 import { getQueryParams } from '../protocol/utils.js';
-import { readJSONL } from './iterator.js';
 import { boldBlueBright, getTypeValue } from './utils.js';
 
 export class SQL {
