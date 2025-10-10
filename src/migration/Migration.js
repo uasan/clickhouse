@@ -15,10 +15,11 @@ export class Migration {
     const migrations = await getMigrations(this.client);
 
     for (const key of Object.keys(classes)) {
-      const migration = new classes[key]();
       const version = Number(classes[key].version) || 1;
 
       if (!migrations.has(key) || migrations.get(key) < version) {
+        const migration = new classes[key]();
+
         await migration.up(this.context);
         await this.client.insert('default.migrations', [
           {
