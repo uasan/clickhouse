@@ -61,10 +61,10 @@ export class ClickHouse {
     return new SQLBuilder(this);
   }
 
-  async insert(table, values) {
+  async insert(table, values, format = 'JSONEachRow') {
     await this.send(
       toInputBody(values),
-      '&query=' + encodeURIComponent('INSERT INTO ' + table + ' FORMAT JSONEachRow'),
+      '&query=' + encodeURIComponent('INSERT INTO ' + table + ' FORMAT ' + format),
     );
   }
 

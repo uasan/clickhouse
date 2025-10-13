@@ -1,5 +1,5 @@
 import { readJSONL } from '../protocol/iterator.js';
-import { getAllRows, getJSON, getValue } from '../protocol/respond.js';
+import { getAllRows, getJSON, getText, getValue } from '../protocol/respond.js';
 import { getQueryParams } from '../protocol/utils.js';
 import { boldBlueBright, getTypeValue } from './utils.js';
 
@@ -126,14 +126,25 @@ export class SQL {
     return this;
   }
 
+  asPretty() {
+    this.respond = getText;
+    this.format = 'PrettyCompact';
+    this.settings += '&output_format_pretty_color=1&output_format_pretty_row_numbers=0';
+    return this;
+  }
+
   useCompression(encoder = 'zstd') {
     this.settings += '&enable_http_compression=1';
     this.client.headers['accept-encoding'] = encoder;
     return this;
   }
 
-  async *[Symbol.asyncIterator]() {
+  useIterator() {
     this.respond = readJSONL;
-    yield* await this.send();
+    return this;
+  }
+
+  async *[Symbol.asyncIterator]() {
+    yield* await this.useIterator().send();
   }
 }

@@ -1,8 +1,7 @@
 export const { parse } = JSON;
 export const decoder = new TextDecoder();
 
-const countRows = res => Number(parse(res.headers.get('x-clickhouse-summary')).total_rows_to_read);
-
+export const getText = async res => await res.text();
 export const getValue = async res => ((await res.json())[0]?.[0]);
 
 export async function getJSON(res) {
