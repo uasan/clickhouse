@@ -10,6 +10,7 @@ export { ClickHouseTable } from './models/ClickHouseTable.js';
 export class ClickHouse {
   url = 'http://localhost:8123';
 
+  signal = null;
   options = null;
   headers = null;
 
@@ -18,6 +19,10 @@ export class ClickHouse {
 
     if (options.url) {
       this.url = options.url;
+    }
+
+    if (options.signal) {
+      this.signal = options.signal;
     }
 
     this.url += '/?database=' + encodeURIOrDefault(options.database, 'default');
@@ -33,6 +38,8 @@ export class ClickHouse {
     try {
       const res = await fetch(this.url + url, {
         method: 'POST',
+        duplex: 'half',
+        signal: this.signal,
         headers: this.headers,
         body,
       });
@@ -64,7 +71,10 @@ export class ClickHouse {
   async insert(table, values, format = 'JSONEachRow') {
     await this.send(
       toInputBody(values),
-      '&query=' + encodeURIComponent('INSERT INTO ' + table + ' FORMAT ' + format),
+      '&query='
+        + encodeURIComponent(
+          'INSERT INTO ' + table + ' FORMAT ' + format,
+        ),
     );
   }
 

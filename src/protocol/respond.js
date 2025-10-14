@@ -13,6 +13,8 @@ export async function getJSON(res) {
 }
 
 export async function getAllRows(res) {
+  // return parse('[' + (await res.text()).slice(0, -1).replaceAll('\n', ',') + ']');
+
   const rows = [];
   const buffer = new Uint8Array(new ArrayBuffer(0, { maxByteLength: 536_870_888 }));
 
