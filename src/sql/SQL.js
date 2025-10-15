@@ -5,6 +5,7 @@ import { boldBlueBright, getTypeValue } from './utils.js';
 
 export class SQL {
   client = null;
+  signal = null;
   format = 'JSONEachRow';
   respond = getAllRows;
 
@@ -14,6 +15,7 @@ export class SQL {
 
   constructor(client) {
     this.client = client;
+    this.signal = client.signal;
   }
 
   send() {
@@ -141,6 +143,11 @@ export class SQL {
 
   useIterator() {
     this.respond = readJSONL;
+    return this;
+  }
+
+  useSignal(signal) {
+    this.signal = signal;
     return this;
   }
 
