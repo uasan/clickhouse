@@ -39,8 +39,8 @@ export class ClickHouse {
       const res = await fetch(this.url + url, {
         method: 'POST',
         duplex: 'half',
-        signal: query?.signal,
         headers: this.headers,
+        signal: query ? query.signal : this.signal,
         body,
       });
 
