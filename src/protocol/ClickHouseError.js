@@ -15,16 +15,20 @@ export class ClickHouseError extends Error {
   }
 
   static from(error) {
-    if (error?.constructor === this) {
+    if (error) {
+      if (error.constructor === this) {
+        return error;
+      }
+
+      switch (typeof error) {
+        case 'string':
+          return new this(error);
+
+        case 'object':
+          return Object.assign(new this(error.cause?.message || error.message), error.cause ?? error);
+      }
+    } else {
       return error;
-    }
-
-    switch (typeof error) {
-      case 'string':
-        return new this(error);
-
-      case 'object':
-        return Object.assign(new this(error.cause?.message || error.message), error.cause ?? error);
     }
   }
 
