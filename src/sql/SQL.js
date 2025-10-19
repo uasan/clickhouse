@@ -1,5 +1,5 @@
 import { readJSONL } from '../protocol/iterator.js';
-import { getAllRows, getJSON, getText, getValue } from '../protocol/respond.js';
+import { getAllJSONL, getJSON, getText, getValue } from '../protocol/respond.js';
 import { getQueryParams } from '../protocol/utils.js';
 import { boldBlueBright, getTypeValue } from './utils.js';
 
@@ -7,7 +7,7 @@ export class SQL {
   client = null;
   signal = null;
   format = 'JSONEachRow';
-  respond = getAllRows;
+  respond = getAllJSONL;
 
   source = [];
   values = [];
@@ -116,7 +116,7 @@ export class SQL {
   }
 
   asTuples() {
-    this.respond = getAllRows;
+    this.respond = getAllJSONL;
     this.format = 'JSONCompactEachRow';
     return this;
   }

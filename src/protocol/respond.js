@@ -12,38 +12,20 @@ export async function getJSON(res) {
   }
 }
 
-export async function getAllRows(res) {
-  // return parse('[' + (await res.text()).slice(0, -1).replaceAll('\n', ',') + ']');
+export async function getAllJSONL(res) {
+  const bytes = await res.bytes();
 
-  const rows = [];
-  const buffer = new Uint8Array(new ArrayBuffer(0, { maxByteLength: 536_870_888 }));
+  if (bytes.length) {
+    let lastPos = bytes.indexOf(10);
+    let nextPos = 0;
 
-  for await (const chunk of res.body) {
-    let lastPos = 0;
-    let nextPost = chunk.indexOf(10);
-
-    while (nextPost !== -1) {
-      if (buffer.length) {
-        const { length } = buffer;
-
-        buffer.buffer.resize(length + nextPost);
-        buffer.set(chunk.subarray(0, nextPost), length);
-        rows.push(parse(decoder.decode(buffer)));
-        buffer.buffer.resize(0);
-      } else {
-        rows.push(parse(decoder.decode(chunk.subarray(lastPos, nextPost))));
-      }
-
-      lastPos = nextPost + 1;
-      nextPost = chunk.indexOf(10, lastPos);
+    while ((nextPos = bytes.indexOf(10, lastPos + 1)) !== -1) {
+      bytes[lastPos] = 44;
+      lastPos = nextPos;
     }
 
-    if (lastPos < chunk.length) {
-      const size = chunk.length - lastPos;
-      buffer.buffer.resize(buffer.length + size);
-      buffer.set(chunk.subarray(lastPos), buffer.length - size);
-    }
+    return parse('[' + decoder.decode(bytes) + ']');
+  } else {
+    return [];
   }
-
-  return rows;
 }

@@ -61,7 +61,7 @@ export class ClickHouse {
   }
 
   sql(source, ...values) {
-    return new SQL(this).set(source, values);
+    return new SQL(this).set(Array.isArray(source) ? source : [source], values);
   }
 
   builder() {
