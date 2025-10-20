@@ -33,11 +33,13 @@ export class ClickHouseError extends Error {
   }
 
   static parse(text) {
-    const group = text.match(errorRegExp).groups;
-    const error = new this(group.message.trim());
+    const group = text.match(errorRegExp)?.groups;
+    const error = new this(group?.message?.trim() ?? text);
 
-    error.code = group.code;
-    error.type = group.type;
+    if (group) {
+      error.code = group.code;
+      error.type = group.type;
+    }
 
     return error;
   }
