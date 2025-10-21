@@ -51,10 +51,10 @@ export class SQL {
         if (sql[0] === ':') {
           pos = sql.search(/[^\w:]/);
         } else {
-          sql = getTypeValue(values[i]) + sql;
+          sql = getTypeValue(values[i]) + '}' + sql;
         }
 
-        this.source.push(pos === -1 ? sql + '}' : sql.slice(0, pos) + '}' + sql.slice(pos));
+        this.source.push(pos === -1 ? sql : sql.slice(0, pos) + '}' + sql.slice(pos));
       }
     }
 
