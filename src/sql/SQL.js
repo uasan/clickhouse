@@ -71,8 +71,10 @@ export class SQL {
 
       for (let i = 1; i < this.source.length; i++) text += '{_' + i + this.source[i];
       return text;
-    } else {
+    } else if (this.source.length) {
       return this.source[0];
+    } else {
+      return '';
     }
   }
 
@@ -141,17 +143,13 @@ export class SQL {
     return this;
   }
 
-  useIterator() {
-    this.respond = readJSONL;
-    return this;
-  }
-
   useSignal(signal) {
     this.signal = signal;
     return this;
   }
 
-  async *[Symbol.asyncIterator]() {
-    yield* await this.useIterator().send();
+  toIterator() {
+    this.respond = readJSONL;
+    return this;
   }
 }

@@ -1,4 +1,5 @@
 import { SQL } from './SQL.js';
+import { isUndefined, undefineSQL } from './utils.js';
 
 class Parts extends Array {
   add(command, delimiter = '') {
@@ -37,13 +38,21 @@ export class SQLBuilder extends SQL {
       if (sql.startsWith(this.parts[i].command)) {
         const part = this.parts[i];
 
+        if (values.some(isUndefined)) {
+          if (values.length === 1 || values.every(isUndefined)) {
+            return this;
+          }
+
+          for (let i = values.length; i--;) {
+            if (values[i] === undefined) undefineSQL(source, values, i);
+          }
+        }
+
         this.source = part.source;
         this.values = part.values;
 
         if (part.source.length) {
           source[0] = part.delimiter + sql.slice(part.command.length).trimStart();
-        } else {
-          source[0] = sql;
         }
 
         return this.set(source, values);
