@@ -45,16 +45,16 @@ export class SQL {
       } else {
         this.values.push(values[i]);
 
-        let pos = -1;
         let sql = source[i + 1];
 
         if (sql[0] === ':') {
-          pos = sql.search(/[^\w:]/);
+          const pos = sql.search(/\s/);
+          sql = pos === -1 ? sql + '}' : sql.slice(0, pos) + '}' + sql.slice(pos);
         } else {
           sql = getTypeValue(values[i]) + '}' + sql;
         }
 
-        this.source.push(pos === -1 ? sql : sql.slice(0, pos) + '}' + sql.slice(pos));
+        this.source.push(sql);
       }
     }
 

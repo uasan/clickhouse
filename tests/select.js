@@ -2,11 +2,8 @@ import { ClickHouse } from '../src/ClickHouse.js';
 
 const clickHouse = new ClickHouse({});
 
-console.time('LOAD');
+const arrayStrings = ['A', 'N\'C', 'B', 'C'];
 
-await clickHouse.sql`
-  SELECT sex
-  FROM source.pdl_profiles
-  LIMIT 2`;
+const res = await clickHouse.sql`SELECT ${arrayStrings}:Array(String)`.log();
 
-console.timeEnd('LOAD');
+console.log(res);

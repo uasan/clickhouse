@@ -28,10 +28,12 @@ export function getTypeValue(value) {
       } else if (value instanceof Date) {
         // SETTINGS date_time_input_format='best_effort'
         return ':DateTime';
+      }else if(Array.isArray(value)){
+        return `:Array(${getTypeValue(value[0]).slice(1)})`
       }
 
     default:
-      throw new Error('Undefined type SQL value parameter');
+     return ':Unknown';
   }
 }
 
