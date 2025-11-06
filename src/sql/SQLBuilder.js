@@ -21,6 +21,7 @@ export class SQLBuilder extends SQL {
     .add('JOIN', '\nJOIN ')
     .add('LEFT JOIN', '\nLEFT JOIN ')
     .add('RIGHT JOIN', '\nRIGHT JOIN ')
+    .add('ARRAY JOIN', '\nARRAY JOIN ')
     .add('CROSS JOIN', '\nCROSS JOIN ')
     .add('FULL JOIN', '\nFULL JOIN ')
     .add('WHERE', ' AND ')

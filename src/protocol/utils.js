@@ -9,7 +9,7 @@ function toLiteral(value) {
     case 'number':
     case 'boolean':
     case 'bigint':
-      return value;
+      return value.toString();
     case 'string':
       return '\'' + value.replaceAll('\'', '\\\'') + '\'';
     case 'object':
@@ -24,7 +24,7 @@ function encode(value) {
     case 'number':
     case 'boolean':
     case 'bigint':
-      return value;
+      return value.toString();
     case 'string':
       return encodeURIComponent(value);
     case 'object':

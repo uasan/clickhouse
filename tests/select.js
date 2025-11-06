@@ -2,8 +2,15 @@ import { ClickHouse } from '../src/ClickHouse.js';
 
 const clickHouse = new ClickHouse({});
 
-const arrayStrings = ['A', 'N\'C', 'B', 'C'];
+const value = [1, 2, 3];
+const builder = clickHouse.builder();
 
-const res = await clickHouse.sql`SELECT (${arrayStrings}:Array(String))`.log();
+builder.sql`
+  SELECT *
+  FROM VALUES(1, 2) AS t`;
 
-console.log(res);
+builder.sql`WHERE (  
+  ${1} OR
+  c1   IN ${value}:Array(Int32))`;
+
+console.log(await builder.log());
