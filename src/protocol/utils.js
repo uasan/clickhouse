@@ -38,6 +38,5 @@ export function getQueryParams(url, values) {
   for (let i = 0; i < values.length; i++) {
     url += '&param__' + (i + 1) + '=' + encode(values[i]);
   }
-  console.log(decodeURI(url));
   return url;
 }
