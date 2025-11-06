@@ -48,8 +48,8 @@ export class SQL {
         let sql = source[i + 1];
 
         if (sql[0] === ':') {
-          const pos = sql.search(/\s/);
-          sql = pos === -1 ? sql + '}' : sql.slice(0, pos) + '}' + sql.slice(pos);
+          const pos = sql.search(/[\s)]/);
+          sql = pos === -1 ? sql + '}' : sql.slice(0, pos + 1) + '}' + sql.slice(pos + 1);
         } else {
           sql = getTypeValue(values[i]) + '}' + sql;
         }
