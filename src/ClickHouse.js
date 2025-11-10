@@ -56,6 +56,14 @@ export class ClickHouse {
     }
   }
 
+  new(options) {
+    return new ClickHouse({ ...this.options, ...options });
+  }
+
+  migration({ context, ...options } = {}) {
+    return new Migration(this.new(options), context);
+  }
+
   query(sql) {
     return this.send(sql);
   }
@@ -78,11 +86,13 @@ export class ClickHouse {
     );
   }
 
-  new(options) {
-    return new ClickHouse({ ...this.options, ...options });
-  }
+  unionAll(...queries) {
+    const query = new SQL(this).set(['', ''], [queries[0]]);
 
-  migration({ context, ...options } = {}) {
-    return new Migration(this.new(options), context);
+    for (let i = 1; i < queries.length; i++) {
+      query.set(['\nUNION ALL\n', ''], [queries[i]]);
+    }
+
+    return query;
   }
 }
