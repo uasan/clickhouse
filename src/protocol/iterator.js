@@ -4,7 +4,9 @@ import { noop } from '../protocol/utils.js';
 
 export async function* readJSONL({ body: stream }) {
   let isDone = false;
-  const bytes = new Uint8Array(new ArrayBuffer(0, { maxByteLength: 536_870_888 }));
+  const bytes = new Uint8Array(
+    new ArrayBuffer(0, { maxByteLength: 536_870_888 }),
+  );
 
   try {
     for await (const chunk of stream) {

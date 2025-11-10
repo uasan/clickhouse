@@ -2,7 +2,8 @@ const { stringify } = JSON;
 
 export const noop = () => {};
 
-export const encodeURIOrDefault = (value, defaultValue) => value ? encodeURIComponent(value) : defaultValue;
+export const encodeURIOrDefault = (value, defaultValue) =>
+  value ? encodeURIComponent(value) : defaultValue;
 
 function toLiteral(value) {
   switch (typeof value) {
@@ -11,9 +12,11 @@ function toLiteral(value) {
     case 'bigint':
       return value.toString();
     case 'string':
-      return '\'' + value.replaceAll('\'', '\\\'') + '\'';
+      return "'" + value.replaceAll("'", "\\'") + "'";
     case 'object':
-      return Array.isArray(value) ? '[' + value.map(toLiteral).join(',') + ']' : stringify(value);
+      return Array.isArray(value)
+        ? '[' + value.map(toLiteral).join(',') + ']'
+        : stringify(value);
     default:
       throw `Invalid type parameter: ${typeof value}`;
   }
@@ -28,7 +31,11 @@ function encode(value) {
     case 'string':
       return encodeURIComponent(value);
     case 'object':
-      return encodeURIComponent(Array.isArray(value) ? '[' + value.map(toLiteral).join(',') + ']' : stringify(value));
+      return encodeURIComponent(
+        Array.isArray(value)
+          ? '[' + value.map(toLiteral).join(',') + ']'
+          : stringify(value),
+      );
     default:
       throw `Invalid type parameter: ${typeof value}`;
   }

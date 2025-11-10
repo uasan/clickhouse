@@ -1,7 +1,8 @@
 import { styleText } from 'node:util';
 
 export const boldRed = text => styleText('bold', styleText('red', text));
-export const boldBlueBright = text => styleText('bold', styleText('blueBright', text));
+export const boldBlueBright = text =>
+  styleText('bold', styleText('blueBright', text));
 
 export const isUndefined = value => value === undefined;
 
@@ -28,12 +29,12 @@ export function getTypeValue(value) {
       } else if (value instanceof Date) {
         // SETTINGS date_time_input_format='best_effort'
         return ':DateTime';
-      }else if(Array.isArray(value)){
-        return `:Array(${getTypeValue(value[0]).slice(1)})`
+      } else if (Array.isArray(value)) {
+        return `:Array(${getTypeValue(value[0]).slice(1)})`;
       }
 
     default:
-     return ':Unknown';
+      return ':Unknown';
   }
 }
 

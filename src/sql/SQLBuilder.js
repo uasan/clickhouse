@@ -44,7 +44,7 @@ export class SQLBuilder extends SQL {
             return this;
           }
 
-          for (let i = values.length; i--;) {
+          for (let i = values.length; i--; ) {
             if (values[i] === undefined) undefineSQL(source, values, i);
           }
         }
@@ -53,7 +53,8 @@ export class SQLBuilder extends SQL {
         this.values = part.values;
 
         if (part.source.length) {
-          source[0] = part.delimiter + sql.slice(part.command.length).trimStart();
+          source[0] =
+            part.delimiter + sql.slice(part.command.length).trimStart();
         }
 
         return this.set(source, values);

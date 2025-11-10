@@ -8,11 +8,12 @@ export class Reporter {
     this.count++;
 
     console.log(
-      this.label + styleText('green', 'Migration: ')
-        + styleText('bold', this.count.toString())
-        + ' '
-        + styleText('green', 'up ')
-        + name,
+      this.label +
+        styleText('green', 'Migration: ') +
+        styleText('bold', this.count.toString()) +
+        ' ' +
+        styleText('green', 'up ') +
+        name,
     );
   }
 }

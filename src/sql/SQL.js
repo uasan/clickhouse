@@ -1,5 +1,10 @@
 import { readJSONL } from '../protocol/iterator.js';
-import { getAllJSONL, getJSON, getText, getValue } from '../protocol/respond.js';
+import {
+  getAllJSONL,
+  getJSON,
+  getText,
+  getValue,
+} from '../protocol/respond.js';
 import { getQueryParams } from '../protocol/utils.js';
 import { boldBlueBright, getTypeValue } from './utils.js';
 
@@ -25,7 +30,11 @@ export class SQL {
       url += this.settings;
     }
 
-    return this.client.send(this.toString(), getQueryParams(url, this.values), this);
+    return this.client.send(
+      this.toString(),
+      getQueryParams(url, this.values),
+      this,
+    );
   }
 
   then(resolve, reject) {
@@ -49,7 +58,10 @@ export class SQL {
 
         if (sql[0] === ':') {
           const pos = sql.search(/[\s)]/);
-          sql = pos === -1 ? sql + '}' : sql.slice(0, pos + 1) + '}' + sql.slice(pos + 1);
+          sql =
+            pos === -1
+              ? sql + '}'
+              : sql.slice(0, pos + 1) + '}' + sql.slice(pos + 1);
         } else {
           sql = getTypeValue(values[i]) + '}' + sql;
         }
@@ -69,7 +81,8 @@ export class SQL {
     if (this.values.length) {
       let text = this.source[0];
 
-      for (let i = 1; i < this.source.length; i++) text += '{_' + i + this.source[i];
+      for (let i = 1; i < this.source.length; i++)
+        text += '{_' + i + this.source[i];
       return text;
     } else if (this.source.length) {
       return this.source[0];
@@ -94,7 +107,10 @@ export class SQL {
   }
 
   log() {
-    console.log(boldBlueBright('SQL:'), this.toString().trim().replaceAll('\n', '\n     '));
+    console.log(
+      boldBlueBright('SQL:'),
+      this.toString().trim().replaceAll('\n', '\n     '),
+    );
 
     if (this.values.length) {
       console.log();
@@ -126,14 +142,17 @@ export class SQL {
   asLookup(name) {
     this.respond = getJSON;
     this.format = 'JSONObjectEachRow';
-    this.settings += '&format_json_object_each_row_column_for_object_name=' + encodeURIComponent(name);
+    this.settings +=
+      '&format_json_object_each_row_column_for_object_name=' +
+      encodeURIComponent(name);
     return this;
   }
 
   asPretty() {
     this.respond = getText;
     this.format = 'PrettyCompact';
-    this.settings += '&output_format_pretty_color=1&output_format_pretty_row_numbers=0';
+    this.settings +=
+      '&output_format_pretty_color=1&output_format_pretty_row_numbers=0';
     return this;
   }
 

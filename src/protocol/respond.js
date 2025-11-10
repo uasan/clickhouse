@@ -2,7 +2,7 @@ export const { parse } = JSON;
 export const decoder = new TextDecoder();
 
 export const getText = async res => await res.text();
-export const getValue = async res => ((await res.json())[0]?.[0]);
+export const getValue = async res => (await res.json())[0]?.[0];
 
 export async function getJSON(res) {
   try {

@@ -79,10 +79,8 @@ export class ClickHouse {
   async insert(table, values, format = 'JSONEachRow') {
     await this.send(
       toInputBody(values),
-      '&query='
-        + encodeURIComponent(
-          'INSERT INTO ' + table + ' FORMAT ' + format,
-        ),
+      '&query=' +
+        encodeURIComponent('INSERT INTO ' + table + ' FORMAT ' + format),
     );
   }
 

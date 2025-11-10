@@ -2,16 +2,21 @@ import { boldRed } from '../sql/utils.js';
 
 const DIR = import.meta.resolve('../../');
 const filterStack = line => !line.includes(DIR) && line.includes('file://');
-const errorRegExp = /(Code|Error): (?<code>\d+).*Exception: (?<message>.+)\((?<type>(?=.+[A-Z]{3})[A-Z0-9_]+?)\)/s;
+const errorRegExp =
+  /(Code|Error): (?<code>\d+).*Exception: (?<message>.+)\((?<type>(?=.+[A-Z]{3})[A-Z0-9_]+?)\)/s;
 
 export const filterErrorStack = stack =>
-  stack.split('\n').filter(filterStack).join('\n')
-  || stack.slice(stack.indexOf('\n') + 1);
+  stack.split('\n').filter(filterStack).join('\n') ||
+  stack.slice(stack.indexOf('\n') + 1);
 
 export class ClickHouseError extends Error {
   constructor(message) {
     super(message);
-    this.stack = boldRed('ClickHouse Error: ') + this.message + '\n' + filterErrorStack(this.stack);
+    this.stack =
+      boldRed('ClickHouse Error: ') +
+      this.message +
+      '\n' +
+      filterErrorStack(this.stack);
   }
 
   static from(error) {
@@ -25,7 +30,10 @@ export class ClickHouseError extends Error {
           return new this(error);
 
         case 'object':
-          return Object.assign(new this(error.cause?.message || error.message), error.cause ?? error);
+          return Object.assign(
+            new this(error.cause?.message || error.message),
+            error.cause ?? error,
+          );
       }
     } else {
       return error;
