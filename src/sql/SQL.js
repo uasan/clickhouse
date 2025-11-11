@@ -35,6 +35,10 @@ export class SQL {
 
     if (this.cache) {
       url += `&use_query_cache=1&query_cache_ttl=${this.cache.ttl}`;
+
+      if (this.cache.nondeterministicFunction) {
+        url += `&query_cache_nondeterministic_function_handling=${this.cache.nondeterministicFunction}`;
+      }
     }
 
     return this.client.send(
@@ -169,8 +173,8 @@ export class SQL {
     return this;
   }
 
-  useCache(ttl = 60) {
-    this.cache = ttl ? { ttl } : null;
+  useCache(cacheOptions = null) {
+    this.cache = cacheOptions;
     return this;
   }
 
