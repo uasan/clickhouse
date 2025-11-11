@@ -9,8 +9,10 @@ import { getQueryParams } from '../protocol/utils.js';
 import { boldBlueBright, getTypeValue } from './utils.js';
 
 export class SQL {
-  client = null;
+  cache = null;
   signal = null;
+  client = null;
+
   format = 'JSONEachRow';
   respond = getAllJSONL;
 
@@ -20,6 +22,7 @@ export class SQL {
 
   constructor(client) {
     this.client = client;
+    this.cache = client.cache;
     this.signal = client.signal;
   }
 
@@ -28,6 +31,10 @@ export class SQL {
 
     if (this.settings) {
       url += this.settings;
+    }
+
+    if (this.cache) {
+      url += `&use_query_cache=1&query_cache_ttl=${this.cache.ttl}`;
     }
 
     return this.client.send(
@@ -159,6 +166,11 @@ export class SQL {
   useCompression(encoder = 'zstd') {
     this.settings += '&enable_http_compression=1';
     this.client.headers['accept-encoding'] = encoder;
+    return this;
+  }
+
+  useCache(ttl = 60) {
+    this.cache = ttl ? { ttl } : null;
     return this;
   }
 

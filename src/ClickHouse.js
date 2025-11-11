@@ -10,6 +10,7 @@ export { ClickHouseTable } from './models/ClickHouseTable.js';
 export class ClickHouse {
   url = 'http://localhost:8123';
 
+  cache = null;
   signal = null;
   options = null;
   headers = null;
@@ -19,6 +20,10 @@ export class ClickHouse {
 
     if (options.url) {
       this.url = options.url;
+    }
+
+    if (options.cache) {
+      this.cache = options.cache;
     }
 
     if (options.signal) {
@@ -61,7 +66,7 @@ export class ClickHouse {
   }
 
   migration({ context, ...options } = {}) {
-    return new Migration(this.new(options), context);
+    return new Migration(this.new({ ...options, cache: null }), context);
   }
 
   query(sql) {

@@ -21,6 +21,9 @@
       "recommended": true,
       "style": {
         "useTemplate": "off"
+      },
+      "suspicious": {
+        "noThenProperty": "off"
       }
     }
   },
