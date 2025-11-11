@@ -173,8 +173,8 @@ export class SQL {
     return this;
   }
 
-  useCache(cacheOptions = null) {
-    this.cache = cacheOptions;
+  useCache(options) {
+    this.cache = options || null;
     return this;
   }
 
