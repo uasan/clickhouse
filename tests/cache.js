@@ -3,11 +3,13 @@ import { ClickHouse } from '../src/ClickHouse.js';
 const clickHouse = new ClickHouse({
   cache: {
     ttl: 3600,
-    nondeterministicFunction: 'save',
+    nonDeterministicFunction: 'ignore',
   },
 });
 
-await clickHouse.sql`SELECT today() AS test_cache`;
+await clickHouse.sql`SELECT today() AS test_cache`.useCache({
+  nonDeterministicFunction: 'save',
+});
 
 console.log(
   await clickHouse.sql`

@@ -34,10 +34,10 @@ export class SQL {
     }
 
     if (this.cache) {
-      url += `&use_query_cache=1&query_cache_ttl=${this.cache.ttl}`;
+      url += `&use_query_cache=1&query_cache_ttl=${this.cache.ttl || 60}`;
 
-      if (this.cache.nondeterministicFunction) {
-        url += `&query_cache_nondeterministic_function_handling=${this.cache.nondeterministicFunction}`;
+      if (this.cache.nonDeterministicFunction) {
+        url += `&query_cache_nondeterministic_function_handling=${this.cache.nonDeterministicFunction}`;
       }
     }
 
@@ -174,7 +174,7 @@ export class SQL {
   }
 
   useCache(options) {
-    this.cache = options || null;
+    this.cache = options ? { ...this.cache, ...options } : null;
     return this;
   }
 
