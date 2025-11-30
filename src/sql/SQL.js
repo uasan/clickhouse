@@ -1,4 +1,4 @@
-import { readJSONL } from '../protocol/iterator.js';
+import { readJSONL, returnBody } from '../protocol/iterator.js';
 import {
   getAllJSONL,
   getJSON,
@@ -185,6 +185,12 @@ export class SQL {
 
   toIterator() {
     this.respond = readJSONL;
+    return this;
+  }
+
+  toStream(format = 'CSVWithNames') {
+    this.format = format;
+    this.respond = returnBody;
     return this;
   }
 }

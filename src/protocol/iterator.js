@@ -2,6 +2,10 @@ import { ClickHouseError } from '../protocol/ClickHouseError.js';
 import { decoder, parse } from '../protocol/respond.js';
 import { noop } from '../protocol/utils.js';
 
+export function returnBody({ body }) {
+  return body;
+}
+
 export async function* readJSONL({ body: stream }) {
   let isDone = false;
   const bytes = new Uint8Array(
