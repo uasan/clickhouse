@@ -1,13 +1,21 @@
 import { ClickHouseError } from '../protocol/ClickHouseError.js';
-import { decoder, parse } from '../protocol/respond.js';
+import { decoder } from '../protocol/respond.js';
 import { noop } from '../protocol/utils.js';
+
+const identity = x => x;
+
+const formats = {
+  TabSeparatedRaw: identity,
+};
 
 export function returnBody({ body }) {
   return body;
 }
 
-export async function* readJSONL({ body: stream }) {
+export async function* readStreamLines({ body: stream }) {
   let isDone = false;
+
+  const parse = formats[this.format] ?? JSON.parse;
   const bytes = new Uint8Array(
     new ArrayBuffer(0, { maxByteLength: 536_870_888 }),
   );

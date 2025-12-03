@@ -1,4 +1,4 @@
-import { readJSONL, returnBody } from '../protocol/iterator.js';
+import { readStreamLines, returnBody } from '../protocol/iterator.js';
 import {
   getAllJSONL,
   getJSON,
@@ -159,6 +159,12 @@ export class SQL {
     return this;
   }
 
+  asRawTSV() {
+    this.respond = getText;
+    this.format = 'TabSeparatedRaw';
+    return this;
+  }
+
   asPretty() {
     this.respond = getText;
     this.format = 'PrettyCompact';
@@ -184,7 +190,7 @@ export class SQL {
   }
 
   toIterator() {
-    this.respond = readJSONL;
+    this.respond = readStreamLines;
     return this;
   }
 
