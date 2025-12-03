@@ -189,8 +189,9 @@ export class SQL {
     return this;
   }
 
-  toIterator() {
+  toIterator(format = 'JSONEachRow') {
     this.respond = readStreamLines;
+    this.format = format;
     return this;
   }
 
