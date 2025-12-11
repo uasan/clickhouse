@@ -1,3 +1,4 @@
+import { ClickHouseError } from '../protocol/ClickHouseError.js';
 import { readStreamLines, returnBody } from '../protocol/iterator.js';
 import {
   getAllJSONL,
@@ -63,21 +64,37 @@ export class SQL {
       if (typeof values[i]?.injectSQL === 'function') {
         values[i].injectSQL(this, source[i + 1]);
       } else {
-        this.values.push(values[i]);
-
         let sql = source[i + 1];
 
         if (sql[0] === ':') {
-          const pos = sql.search(/[\s)]/);
-          sql =
-            pos === -1
-              ? sql + '}'
-              : sql.slice(0, pos + 1) + '}' + sql.slice(pos + 1);
+          if (sql.startsWith(':Identifiers')) {
+            const names = values[i];
+            const c = names.length - 1;
+
+            if (c < 0) {
+              throw new ClickHouseError('Empty identifier parameter');
+            }
+
+            values[i] = names[c];
+            sql = ':Identifier}' + sql.slice(12);
+
+            for (let i = 0; i < c; i++) {
+              this.source.push(':Identifier}, ');
+              this.values.push(names[i]);
+            }
+          } else {
+            const pos = sql.search(/[\s)]/);
+            sql =
+              pos === -1
+                ? sql + '}'
+                : sql.slice(0, pos + 1) + '}' + sql.slice(pos + 1);
+          }
         } else {
           sql = getTypeValue(values[i]) + '}' + sql;
         }
 
         this.source.push(sql);
+        this.values.push(values[i]);
       }
     }
 
