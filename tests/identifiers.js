@@ -11,7 +11,11 @@ async function test() {
   const columns = ['event', 'value'];
 
   await clickHouse.sql`
-    SELECT ${columns}:Identifiers FROM system.events LIMIT 1
+    SELECT
+      sum(value) OVER (PARTITION BY ${columns}:Identifiers)
+    FROM system.events WHERE value != ${10}
+    ORDER BY ${columns}:Identifiers
+    LIMIT 1
   `.log();
 }
 

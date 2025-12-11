@@ -68,20 +68,13 @@ export class SQL {
 
         if (sql[0] === ':') {
           if (sql.startsWith(':Identifiers')) {
-            const names = values[i];
-            const c = names.length - 1;
-
-            if (c < 0) {
-              throw new ClickHouseError('Empty identifier parameter');
+            if (!Array.isArray(values[i])) {
+              throw new ClickHouseError('Type Identifiers must by Array');
             }
 
-            values[i] = names[c];
-            sql = ':Identifier}' + sql.slice(12);
-
-            for (let i = 0; i < c; i++) {
-              this.source.push(':Identifier}, ');
-              this.values.push(names[i]);
-            }
+            this.source[this.source.length - 1] +=
+              values[i].join(', ') + sql.slice(12);
+            continue;
           } else {
             const pos = sql.search(/[\s)]/);
             sql =
