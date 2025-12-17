@@ -91,11 +91,14 @@ export class ClickHouse {
 
   unionAll(...queries) {
     const query = new SQL(this);
+
+    queries[0].make();
     query.source.push(...queries[0].source);
     query.values.push(...queries[0].values);
 
     for (let i = 1; i < queries.length; i++) {
       query.source[query.source.length - 1] += '\nUNION ALL\n';
+      queries[i].make();
       queries[i].injectSQL(query, '');
     }
 

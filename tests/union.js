@@ -1,6 +1,11 @@
+import { env } from 'node:process';
 import { ClickHouse } from '../src/ClickHouse.js';
 
-const clickHouse = new ClickHouse({});
+const clickHouse = new ClickHouse({
+  url: env.CLICKHOUSE_URL,
+  username: env.CLICKHOUSE_USERNAME,
+  password: env.CLICKHOUSE_PASSWORD,
+});
 
 const queryA = clickHouse.sql`SELECT 'A' AS marker, 1 AS result`;
 const queryB = clickHouse.sql`SELECT 'B' AS marker, 2 AS result`;
