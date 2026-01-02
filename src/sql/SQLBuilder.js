@@ -33,10 +33,9 @@ export class SQLBuilder extends SQL {
 
   sql(source, ...values) {
     source = [...source];
-    const sql = source[0].trimStart();
 
     for (let i = 0; i < this.parts.length; i++) {
-      if (sql.startsWith(this.parts[i].command)) {
+      if (source[0].trimStart().startsWith(this.parts[i].command)) {
         const part = this.parts[i];
 
         if (values.some(isUndefined)) {
@@ -54,14 +53,14 @@ export class SQLBuilder extends SQL {
 
         if (part.source.length) {
           source[0] =
-            part.delimiter + sql.slice(part.command.length).trimStart();
+            part.delimiter + source[0].trimStart().slice(part.command.length);
         }
 
         return this.set(source, values);
       }
     }
 
-    throw new Error('Unknown SQL build command: ' + sql);
+    throw new Error('Unknown SQL build command: ' + source[0]);
   }
 
   make() {

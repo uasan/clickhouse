@@ -5,7 +5,9 @@ const clickHouse = new ClickHouse({});
 function test({ a, b, c }) {
   const builder = clickHouse.builder();
 
-  builder.sql`WHERE (
+  builder.sql`WHERE column = ${1}`;
+  builder.sql`
+  WHERE (
     a = ${a} OR  
     b = ${b} OR   
     c = ${c}
@@ -36,6 +38,12 @@ test({
   a: undefined, // 'A',
   b: 'B',
   c: 'C',
+});
+
+test({
+  a: undefined, // 'A',
+  b: 'B',
+  c: undefined, //'C',
 });
 
 test({

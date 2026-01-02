@@ -31,6 +31,8 @@ export function getTypeValue(value) {
         return ':DateTime';
       } else if (Array.isArray(value)) {
         return `:Array(${getTypeValue(value[0]).slice(1)})`;
+      } else {
+        return ':Unknown';
       }
 
     default:
