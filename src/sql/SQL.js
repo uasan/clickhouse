@@ -112,7 +112,9 @@ export class SQL {
     }
   }
 
-  injectSQL({ source, values }, string) {
+  injectSQL(query, string) {
+    const { source, values } = query;
+
     this.make();
     source[source.length - 1] += this.source[0];
 
@@ -125,6 +127,10 @@ export class SQL {
     }
 
     source[source.length - 1] += string;
+
+    if (this.cache) {
+      query.cache = { ...this.cache, ...query.cache };
+    }
   }
 
   log() {
