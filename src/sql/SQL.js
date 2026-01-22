@@ -129,7 +129,10 @@ export class SQL {
     source[source.length - 1] += string;
 
     if (this.cache) {
-      query.cache = { ...this.cache, ...query.cache };
+      query.cache =
+        query.cache === query.client?.cache
+          ? { ...query.cache, ...this.cache }
+          : { ...this.cache, ...query.cache };
     }
   }
 

@@ -12,8 +12,7 @@ const clickHouse = new ClickHouse({
 
 const builder = clickHouse.builder();
 builder.sql`
-  SELECT now() AS test_cache
-`.useCache({
+  SELECT now() AS test_cache_v2`.useCache({
   nonDeterministicFunction: 'save',
 });
 
