@@ -130,8 +130,8 @@ export class SQL {
 
     if (this.cache) {
       query.cache =
-        query.cache === query.client?.cache
-          ? { ...query.cache, ...this.cache }
+        query.cache === null || query.cache === query.client?.cache
+          ? this.cache
           : { ...this.cache, ...query.cache };
     }
   }
