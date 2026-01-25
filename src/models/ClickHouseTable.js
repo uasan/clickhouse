@@ -24,7 +24,5 @@ export class ClickHouseTable {
     } finally {
       await query.client.sql`DROP TABLE IF EXISTS ${newTableName}`;
     }
-
-    console.log(sql);
   }
 }
