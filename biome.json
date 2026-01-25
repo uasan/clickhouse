@@ -24,6 +24,10 @@
       },
       "suspicious": {
         "noThenProperty": "off"
+      },
+      "complexity": {
+        "noThisInStatic": "off",
+        "noStaticOnlyClass": "off"
       }
     }
   },
