@@ -29,5 +29,7 @@ class MyModel extends ClickHouseTable {
 await new MyModel().up({ clickHouse });
 
 await MyModel.exchange(clickHouse.sql`
-    SELECT 1  
+  SELECT 1  
 `);
+
+console.log(await clickHouse.sql`SELECT * FROM ${MyModel}`);
